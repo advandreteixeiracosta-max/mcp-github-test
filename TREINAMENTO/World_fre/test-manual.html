@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analisador de Frequência de Palavras - Teste</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            min-height: 100vh;
+            padding: 32px 16px;
+        }
+
+        .container {
+            max-width: 56rem;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        h1 {
+            font-size: 2.25rem;
+            font-weight: bold;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 1.125rem;
+            color: #4b5563;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 32px;
+            margin-bottom: 32px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 192px;
+            padding: 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            resize: none;
+            transition: all 0.2s;
+        }
+
+        textarea:focus {
+            outline: none;
+            ring: 2px;
+            ring-color: #3b82f6;
+            border-color: transparent;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        textarea:disabled {
+            background-color: #f3f4f6;
+            cursor: not-allowed;
+        }
+
+        .char-count {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+            gap: 16px;
+        }
+
+        .char-info {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background-color: #e5e7eb;
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            transition: all 0.3s;
+            border-radius: 9999px;
+        }
+
+        .progress-fill.low {
+            background-color: #10b981;
+        }
+
+        .progress-fill.medium {
+            background-color: #f59e0b;
+        }
+
+        .progress-fill.high {
+            background-color: #ef4444;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 500;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: #2563eb;
+        }
+
+        .btn-primary:disabled {
+            background-color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background-color: #d1d5db;
+            color: #111827;
+        }
+
+        .btn-secondary:hover {
+            background-color: #9ca3af;
+        }
+
+        .error-message {
+            background-color: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            padding: 16px;
+            display: none;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .error-message.show {
+            display: flex;
+        }
+
+        .error-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            color: #dc2626;
+        }
+
+        .error-text {
+            color: #991b1b;
+            font-size: 0.875rem;
+        }
+
+        .results-section {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .results-section.show {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .results-header {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: white;
+            padding: 16px;
+            border-radius: 8px 8px 0 0;
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background-color: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: #111827;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        tbody tr:hover {
+            background-color: #f9fafb;
+        }
+
+        .rank {
+            font-weight: 600;
+            color: #6b7280;
+        }
+
+        .word {
+            font-weight: 500;
+            color: #111827;
+        }
+
+        .count {
+            text-align: right;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .percentage {
+            text-align: right;
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        .bar-cell {
+            text-align: right;
+        }
+
+        .mini-bar {
+            display: inline-block;
+            height: 8px;
+            background-color: #2563eb;
+            border-radius: 4px;
+            min-width: 20px;
+        }
+
+        .stats-footer {
+            background-color: #f9fafb;
+            padding: 16px;
+            border-top: 1px solid #e5e7eb;
+            border-radius: 0 0 8px 8px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            text-align: center;
+        }
+
+        .stat-item {
+            border-right: 1px solid #e5e7eb;
+        }
+
+        .stat-item:last-child {
+            border-right: none;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 32px;
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 640px) {
+            h1 {
+                font-size: 1.875rem;
+            }
+
+            .card {
+                padding: 16px;
+            }
+
+            .stats-footer {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-item {
+                border-right: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>Analisador de Frequência de Palavras</h1>
+            <p class="subtitle">Analise a frequência de palavras no seu texto</p>
+        </header>
+
+        <!-- Main Card -->
+        <div class="card">
+            <!-- Error Message -->
+            <div class="error-message" id="errorMessage">
+                <svg class="error-icon" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="error-text" id="errorText"></span>
+            </div>
+
+            <!-- Form -->
+            <form id="form" onsubmit="handleAnalyze(event)">
+                <div class="form-group">
+                    <label for="textInput">Entrada de Texto</label>
+                    <textarea
+                        id="textInput"
+                        placeholder="Digite ou cole seu texto aqui..."
+                        maxlength="2048"
+                        aria-label="Text input for word frequency analysis">
+                    </textarea>
+                    <div class="char-count">
+                        <span class="char-info">
+                            <span id="charCount">0</span> / <span id="maxChar">2048</span> characters
+                        </span>
+                        <div class="progress-bar">
+                            <div class="progress-fill low" id="progressFill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="button-group">
+                    <button type="submit" class="btn-primary" id="analyzeBtn">
+                        Analisar
+                    </button>
+                    <button type="button" class="btn-secondary" id="resetBtn" style="display: none;" onclick="handleReset()">
+                        Limpar
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Results -->
+        <div class="results-section" id="resultsSection">
+            <div class="card">
+                <div class="results-header">Resultados</div>
+                <div class="table-wrapper">
+                    <table id="resultsTable">
+                        <thead>
+                            <tr>
+                                <th>Posição</th>
+                                <th>Palavra</th>
+                                <th style="text-align: right;">Frequência</th>
+                                <th style="text-align: right;">Percentual</th>
+                                <th style="text-align: right;">Visualização</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultsBody">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="stats-footer">
+                    <div class="stat-item">
+                        <div class="stat-label">Total de Palavras</div>
+                        <div class="stat-value" id="totalWords">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Palavras Únicas</div>
+                        <div class="stat-value" id="uniqueWords">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Mais Frequente</div>
+                        <div class="stat-value" id="mostFrequent">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer-text">
+            Máximo de 2048 caracteres por análise
+        </div>
+    </div>
+
+    <script>
+        const textInput = document.getElementById('textInput');
+        const charCount = document.getElementById('charCount');
+        const progressFill = document.getElementById('progressFill');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const errorMessage = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+        const resultsSection = document.getElementById('resultsSection');
+        const resultsBody = document.getElementById('resultsBody');
+        const totalWordsEl = document.getElementById('totalWords');
+        const uniqueWordsEl = document.getElementById('uniqueWords');
+        const mostFrequentEl = document.getElementById('mostFrequent');
+
+        const MAX_LENGTH = 2048;
+        const STOP_WORDS = new Set([
+            'a', 'an', 'and', 'are', 'as', 'at', 'be', 'but', 'by', 'for', 'from',
+            'has', 'he', 'in', 'is', 'it', 'its', 'of', 'on', 'or', 'that', 'the',
+            'to', 'was', 'will', 'with', 'you', 'your'
+        ]);
+
+        // Update character count and progress bar
+        textInput.addEventListener('input', (e) => {
+            const count = e.target.value.length;
+            charCount.textContent = count;
+
+            const percentage = (count / MAX_LENGTH) * 100;
+            progressFill.style.width = percentage + '%';
+
+            // Update color
+            progressFill.className = 'progress-fill';
+            if (percentage <= 60) {
+                progressFill.classList.add('low');
+            } else if (percentage <= 80) {
+                progressFill.classList.add('medium');
+            } else {
+                progressFill.classList.add('high');
+            }
+
+            // Enable/disable button
+            analyzeBtn.disabled = count === 0;
+        });
+
+        function tokenizeText(text) {
+            return text
+                .toLowerCase()
+                .split(/\s+/)
+                .filter(word => word.length > 0);
+        }
+
+        function removePunctuation(word) {
+            return word.replace(/[^\w\-]/g, '');
+        }
+
+        function processText(text) {
+            let words = tokenizeText(text);
+            words = words
+                .map(removePunctuation)
+                .filter(word => word.length > 0);
+            return words;
+        }
+
+        function countFrequency(words) {
+            const frequency = {};
+            for (const word of words) {
+                frequency[word] = (frequency[word] || 0) + 1;
+            }
+            return frequency;
+        }
+
+        function analyzeWords(words) {
+            const frequency = countFrequency(words);
+
+            const result = Object.entries(frequency)
+                .map(([word, count]) => ({ word, count }))
+                .sort((a, b) => b.count - a.count);
+
+            const totalCount = words.length;
+            const withPercentages = result.map(item => ({
+                ...item,
+                percentage: totalCount > 0 ? ((item.count / totalCount) * 100).toFixed(2) : 0
+            }));
+
+            return {
+                words: withPercentages,
+                total: totalCount,
+                unique: Object.keys(frequency).length,
+                max: result[0]?.count || 0
+            };
+        }
+
+        function handleAnalyze(e) {
+            e.preventDefault();
+
+            const text = textInput.value.trim();
+
+            // Validate
+            if (text.length === 0) {
+                showError('Por favor, digite algum texto para analisar');
+                resultsSection.classList.remove('show');
+                resetBtn.style.display = 'none';
+                return;
+            }
+
+            if (text.length > MAX_LENGTH) {
+                showError(`Text exceeds maximum length of ${MAX_LENGTH} characters`);
+                resultsSection.classList.remove('show');
+                resetBtn.style.display = 'none';
+                return;
+            }
+
+            // Analyze
+            const words = processText(text);
+            const result = analyzeWords(words);
+
+            // Clear error
+            errorMessage.classList.remove('show');
+
+            // Display results
+            displayResults(result);
+            resultsSection.classList.add('show');
+            resetBtn.style.display = 'flex';
+        }
+
+        function displayResults(result) {
+            resultsBody.innerHTML = '';
+
+            result.words.forEach((item, index) => {
+                const row = document.createElement('tr');
+                const barWidth = (item.percentage / 100) * 100;
+
+                row.innerHTML = `
+                    <td class="rank">${index + 1}</td>
+                    <td class="word">${escapeHtml(item.word)}</td>
+                    <td class="count">${item.count}</td>
+                    <td class="percentage">${item.percentage}%</td>
+                    <td class="bar-cell">
+                        <div class="mini-bar" style="width: ${barWidth}px;"></div>
+                    </td>
+                `;
+
+                resultsBody.appendChild(row);
+            });
+
+            totalWordsEl.textContent = result.total;
+            uniqueWordsEl.textContent = result.unique;
+            mostFrequentEl.textContent = result.max;
+        }
+
+        function handleReset() {
+            textInput.value = '';
+            charCount.textContent = '0';
+            progressFill.style.width = '0%';
+            progressFill.className = 'progress-fill low';
+            resultsSection.classList.remove('show');
+            errorMessage.classList.remove('show');
+            resetBtn.style.display = 'none';
+            analyzeBtn.disabled = true;
+            textInput.focus();
+        }
+
+        function showError(message) {
+            errorText.textContent = message;
+            errorMessage.classList.add('show');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Initial state
+        analyzeBtn.disabled = true;
+    </script>
+</body>
+</html>

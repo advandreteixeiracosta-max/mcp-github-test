@@ -1,0 +1,159 @@
+╔════════════════════════════════════════════════════════════════════╗
+║                                                                    ║
+║         WORD FREQUENCY ANALYZER - INÍCIO RÁPIDO                   ║
+║                                                                    ║
+╚════════════════════════════════════════════════════════════════════╝
+
+🎯 OBJETIVO
+Analyze the frequency of words in text blocks (up to 2048 characters).
+
+📂 VOCÊ ESTÁ EM
+o:\Meu Drive\PROJETO - IA\TREINAMENTO\World_fre
+
+═════════════════════════════════════════════════════════════════════
+
+🚀 COMEÇAR EM 3 PASSOS
+
+1. Abra PowerShell ou CMD neste diretório
+
+2. Execute:
+   npm run dev
+
+3. Acesse no navegador:
+   http://localhost:5173
+
+═════════════════════════════════════════════════════════════════════
+
+📖 DOCUMENTAÇÃO IMPORTANTE
+
+📄 CLAUDE.md
+   • Stack técnico justificado
+   • 5 fases de desenvolvimento
+   • Convenções de código
+   • Guia completo do desenvolvedor
+
+📄 README.md
+   • Features da aplicação
+   • Como instalar
+   • Estrutura do projeto
+   • Browser support
+
+📄 PROJETO_RESUMO.md
+   • Resumo executivo
+   • Tudo que foi criado
+   • Métricas do projeto
+   • Checklist de conclusão
+
+📄 SETUP_TROUBLESHOOTING.md
+   • Problemas comuns (npm, Windows, permissões)
+   • Soluções detalhadas
+   • Alternativas (Yarn, Docker, WSL)
+
+═════════════════════════════════════════════════════════════════════
+
+🔧 COMANDOS DISPONÍVEIS
+
+npm run dev              ← Iniciar servidor com HMR (recomendado)
+npm run build           ← Build para produção
+npm run preview         ← Visualizar build produção
+npm run test            ← Executar testes
+npm run test:watch      ← Testes em modo watch
+npm run test:coverage   ← Coverage report
+npm run test:ui         ← UI interativa de testes
+
+═════════════════════════════════════════════════════════════════════
+
+📁 ESTRUTURA DO PROJETO
+
+src/
+├── components/         • TextInput, AnalysisButton, FrequencyTable
+├── hooks/             • useWordFrequency (estado + lógica)
+├── utils/             • textProcessor, frequencyCounter, validation
+├── types/             • TypeScript interfaces
+├── styles/            • Tailwind CSS global
+└── App.tsx            • Componente raiz
+
+═════════════════════════════════════════════════════════════════════
+
+⚠️ SE HOUVER PROBLEMAS COM NPM
+
+Windows tem problemas com espaços no path. Se npm install falhar:
+
+Solução Rápida:
+   npm install --force --legacy-peer-deps
+
+Solução Alternativa (use Yarn):
+   npm install -g yarn
+   yarn install
+   yarn dev
+
+Mais soluções:
+   Abra SETUP_TROUBLESHOOTING.md
+
+═════════════════════════════════════════════════════════════════════
+
+🧪 TESTAR A APLICAÇÃO
+
+1. Digite ou copie um texto no campo de entrada
+2. Clique em "Analyze"
+3. Veja a tabela de frequência ordenada
+4. Observe a barra de progresso visual
+
+MVP Funcionalidades:
+✅ Input com validação
+✅ Processamento de texto
+✅ Tabela de resultados
+✅ Erros com mensagens claras
+✅ Design responsivo
+
+═════════════════════════════════════════════════════════════════════
+
+🎓 FASES DE DESENVOLVIMENTO
+
+Fase 1 (Atual): MVP - 100% ✅
+   • Input, análise, tabela
+   • Validação completa
+   • Interface responsiva
+
+Fase 2: Polimento Visual
+   • Dark mode
+   • Animações
+   • Temas
+
+Fase 3: Gráficos
+   • Column charts
+   • Bubble charts
+   • Interatividade
+
+Fase 4: URL Parser
+   • Importar de URLs
+   • Web scraping
+   • Cache
+
+Fase 5: Production
+   • Testes completos
+   • Otimizações
+   • Deploy
+
+═════════════════════════════════════════════════════════════════════
+
+📞 SUPORTE
+
+❓ Problema com instalação?
+   → Leia SETUP_TROUBLESHOOTING.md
+
+❓ Dúvida sobre código?
+   → Leia CLAUDE.md (Seção Convenções de Código)
+
+❓ Quero ver todo o que foi feito?
+   → Leia PROJETO_RESUMO.md
+
+═════════════════════════════════════════════════════════════════════
+
+✨ BOA SORTE!
+
+Projeto criado: 2026-05-01
+Versão: 0.1.0 (MVP)
+Status: Pronto para desenvolvimento
+
+═════════════════════════════════════════════════════════════════════

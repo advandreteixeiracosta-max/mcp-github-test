@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p src/components src/hooks src/utils src/types public)",
+      "Bash(touch package.json tsconfig.json vite.config.ts tailwind.config.js postcss.config.js)",
+      "Bash(npm list *)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(npm cache *)",
+      "Bash(grep -E \"^\\(vite|react|typescript\\)$\")",
+      "Bash(grep -E \"^\\(react|vite|typescript\\)$\")",
+      "Bash(timeout 15 npx vite)",
+      "Bash(timeout 10 start-dev.bat)",
+      "PowerShell(cd \"o:\\\\Meu Drive\\\\PROJETO - IA\\\\TREINAMENTO\\\\World_fre\"; powershell -ExecutionPolicy Bypass -File .\\\\start-dev.ps1 2>&1 | Select-Object -First 50)",
+      "PowerShell(npm install -g yarn 2>&1)",
+      "Bash(curl -s http://localhost:5173)",
+      "Bash(npx yarn *)",
+      "Bash(Start-Sleep -Seconds 3)",
+      "Bash(curl -s http://localhost:5173/)",
+      "Bash(node test-accents.js)"
+    ]
+  }
+}
