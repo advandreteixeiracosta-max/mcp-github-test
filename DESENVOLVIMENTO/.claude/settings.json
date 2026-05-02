@@ -1,0 +1,6 @@
+{
+  "env": {
+    "GITHUB_COPILOT_TOKEN": "$GITHUB_COPILOT_TOKEN"
+  },
+  "enabledMcpjsonServers": ["github"]
+}
